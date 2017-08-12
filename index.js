@@ -82,18 +82,13 @@ Db.prototype.queryStream8 = function (near, distance) {
   fakePipe(this._neighbourStream(prefix, 'southwest'), res)
 
   var dedupe = {}
-  var total = 0
-  var passed = 0
   function write (pt, enc, next) {
-    total++
     if (dedupe[pt.key]) return next()
     dedupe[pt.key] = true
-    passed++
     if (haversineDistanceKm(near, pt.value.split(',')) >= distance) return next()
     next(null, pt)
   }
   function end(done) {
-    console.log('filtered', total-passed, 'out of', total)
     done()
   }
 
