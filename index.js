@@ -50,6 +50,19 @@ function neighbourFromDir (at, dir) {
   }
 }
 
+function fakePipe (from, to) {
+  if (!to.pending) to.pending = 0
+  to.pending++
+  from.on('data', function (data) {
+    to.write(data)
+  })
+  from.on('end', function () {
+    if (--to.pending === 0) {
+      to.end()
+    }
+  })
+}
+
 Db.prototype.queryStream8 = function (near, distance) {
   var res = through.obj(write, end)
 
@@ -57,15 +70,16 @@ Db.prototype.queryStream8 = function (near, distance) {
   var prefixLen = this.distanceToHashLength(distance)
   var prefix = nearHash.substring(0, prefixLen)
 
-  this._neighbourStream(prefix, 'west').pipe(res)
-  this._neighbourStream(prefix, 'east').pipe(res)
-  this._neighbourStream(prefix, 'west').pipe(res)
-  this._neighbourStream(prefix, 'north').pipe(res)
-  this._neighbourStream(prefix, 'south').pipe(res)
-  this._neighbourStream(prefix, 'northeast').pipe(res)
-  this._neighbourStream(prefix, 'northwest').pipe(res)
-  this._neighbourStream(prefix, 'southeast').pipe(res)
-  this._neighbourStream(prefix, 'southwest').pipe(res)
+  fakePipe(this.queryStream(near, distance), res)
+  fakePipe(this._neighbourStream(prefix, 'west'), res)
+  fakePipe(this._neighbourStream(prefix, 'east'), res)
+  fakePipe(this._neighbourStream(prefix, 'west'), res)
+  fakePipe(this._neighbourStream(prefix, 'north'), res)
+  fakePipe(this._neighbourStream(prefix, 'south'), res)
+  fakePipe(this._neighbourStream(prefix, 'northeast'), res)
+  fakePipe(this._neighbourStream(prefix, 'northwest'), res)
+  fakePipe(this._neighbourStream(prefix, 'southeast'), res)
+  fakePipe(this._neighbourStream(prefix, 'southwest'), res)
 
   var dedupe = {}
   var total = 0
@@ -88,12 +102,12 @@ Db.prototype.queryStream8 = function (near, distance) {
 
 Db.prototype.distanceToHashLength = function (dist) {
   if (dist >= 2500) return 1
-  else if (dist >= 630) return 2
-  else if (dist >= 78) return 3
-  else if (dist >= 20) return 4
-  else if (dist >= 2.4) return 5
-  else if (dist >= 0.61) return 6
-  else if (dist >= 0.076) return 7
+  else if (dist >= 630) return 1
+  else if (dist >= 78) return 2
+  else if (dist >= 20) return 3
+  else if (dist >= 2.4) return 4
+  else if (dist >= 0.61) return 5
+  else if (dist >= 0.076) return 6
   else return 8
 }
 
