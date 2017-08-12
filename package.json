@@ -1,0 +1,27 @@
+{
+  "name": "geohash-point-store",
+  "description": "",
+  "author": "Stephen Whitmore <sww@eight.net>",
+  "version": "0.0.0",
+  "repository": {
+    "url": "git://github.com/noffle/geohash-point-store.git"
+  },
+  "homepage": "https://github.com/noffle/geohash-point-store",
+  "bugs": "https://github.com/noffle/geohash-point-store/issues",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js",
+    "lint": "standard"
+  },
+  "keywords": [],
+  "dependencies": {
+    "geohasher": "0.0.1",
+    "haversine": "^1.0.2",
+    "through2": "^2.0.3"
+  },
+  "devDependencies": {
+    "tape": "~4.6.2",
+    "standard": "~10.0.0"
+  },
+  "license": "ISC"
+}
