@@ -5,6 +5,7 @@ var haversine = require('haversine')
 
 module.exports = Db
 
+// TODO: support 'remove' operation (by point)
 // TODO: support multiple points @ same geohash
 function Db (lvl) {
   if (!(this instanceof Db)) return new Db(lvl)

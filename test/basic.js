@@ -3,6 +3,8 @@ var level = require('memdb')
 var haversine = require('haversine')
 var Db = require('..')
 
+// TODO: test case where two different points map to the same geohash -- does everything break?
+
 test('many random points', function (t) {
   var db = Db(level())
 
