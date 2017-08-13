@@ -36,7 +36,8 @@ test('many random points', function (t) {
     var q = db.queryStream8(at, 1)
     var matches = 0
     q.on('data', function (pt) {
-      if (expected[pt.value]) matches++
+      var at = pt.lat + ',' + pt.lon
+      if (expected[at]) matches++
     })
     q.once('end', function () {
       console.timeEnd('query')

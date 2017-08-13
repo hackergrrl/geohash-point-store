@@ -13,9 +13,14 @@ function Db (lvl) {
   this.db = lvl
 }
 
-Db.prototype.insert = function (pt, cb) {
+Db.prototype.insert = function (pt, value, cb) {
   var hash = geohash(pt[0], pt[1])
-  this.db.put(hash, pt[0] + ',' + pt[1], cb)
+  var v = {
+    lat: pt[0],
+    lon: pt[1],
+    value: value
+  }
+  this.db.put(hash, JSON.stringify(v), cb)
 }
 
 // distance in km
@@ -86,8 +91,9 @@ Db.prototype.queryStream8 = function (near, distance) {
   function write (pt, enc, next) {
     if (dedupe[pt.key]) return next()
     dedupe[pt.key] = true
-    if (haversineDistanceKm(near, pt.value.split(',')) >= distance) return next()
-    next(null, pt)
+    var res = JSON.parse(pt.value)
+    if (haversineDistanceKm(near, [res.lat, res.lon]) >= distance) return next()
+    next(null, res)
   }
   function end(done) {
     done()
