@@ -24,7 +24,7 @@ Db.prototype.insert = function (pt, value, cb) {
 }
 
 // distance in km
-Db.prototype.queryStream = function (near, distance) {
+Db.prototype._queryStream = function (near, distance) {
   near = geohash(near[0], near[1])
   var prefixLen = this.distanceToHashLength(distance)
   var prefix = near.substring(0, prefixLen)
@@ -69,14 +69,15 @@ function fakePipe (from, to) {
   })
 }
 
-Db.prototype.queryStream8 = function (near, distance) {
+// Query the geoarea at 'near', but also all neighbours in 8 directions.
+Db.prototype.queryStream = function (near, distance) {
   var res = through.obj(write, end)
 
   var nearHash = geohash(near[0], near[1])
   var prefixLen = this.distanceToHashLength(distance)
   var prefix = nearHash.substring(0, prefixLen)
 
-  fakePipe(this.queryStream(near, distance), res)
+  fakePipe(this._queryStream(near, distance), res)
   fakePipe(this._neighbourStream(prefix, 'west'), res)
   fakePipe(this._neighbourStream(prefix, 'east'), res)
   fakePipe(this._neighbourStream(prefix, 'west'), res)
