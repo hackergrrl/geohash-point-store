@@ -1,6 +1,6 @@
 {
   "name": "geohash-point-store",
-  "description": "",
+  "description": "Store and query spatial points using geohashes and LevelDB.",
   "author": "Stephen Whitmore <sww@eight.net>",
   "version": "0.0.0",
   "repository": {

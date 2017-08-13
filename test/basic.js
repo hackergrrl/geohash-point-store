@@ -33,7 +33,7 @@ test('many random points', function (t) {
 
   function check () {
     console.time('query')
-    var q = db.queryStream8(at, 1)
+    var q = db.queryStream(at, 1)
     var matches = 0
     q.on('data', function (pt) {
       var at = pt.lat + ',' + pt.lon
