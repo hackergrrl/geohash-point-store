@@ -28,7 +28,7 @@ insert()
 
 function query () {
   var at = [0.3, 0.3]
-  var q = db.queryStream8(at, 1)  // 1km
+  var q = db.queryStream(at, 1)  // 1km
   q.on('data', function (pt) {
     console.log('Q', pt)
   })
