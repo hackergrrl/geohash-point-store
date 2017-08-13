@@ -24,7 +24,7 @@ test('many random points', function (t) {
       expected[str] = true
     }
 
-    db.insert([x, y], function () {
+    db.insert([x, y], 'x', function () {
       pending--
       insert()
     })
@@ -32,7 +32,6 @@ test('many random points', function (t) {
   insert()
 
   function check () {
-    console.time('query')
     var q = db.queryStream(at, 1)
     var matches = 0
     q.on('data', function (pt) {
@@ -40,7 +39,6 @@ test('many random points', function (t) {
       if (expected[at]) matches++
     })
     q.once('end', function () {
-      console.timeEnd('query')
       t.equal(Object.keys(expected).length, matches)
       t.end()
     })
