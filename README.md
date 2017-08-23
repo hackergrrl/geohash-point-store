@@ -67,6 +67,11 @@ within distance `distance`, in kilometres.
 
 Returns a readable stream of points of the form `{ lat: ?, lon: ?, value: ? }`.
 
+## Caveats
+
+- only one point is stored at a precise geohash, so multiple close points
+  (within metres) could overwrite each other
+
 ## Install
 
 With [npm](https://npmjs.org/) installed, run
